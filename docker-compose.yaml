@@ -23,8 +23,8 @@ x-chartbrew-common: &chartbrew-common
     CB_DB_NAME: ${CB_DB_NAME}
     CB_DB_USERNAME: ${CB_DB_USERNAME}
     CB_DB_PASSWORD: ${CB_DB_PASSWORD}
-    REACT_APP_CLIENT_HOST: "http://${POKUS_CHARTBREW_FQDN}:${CHARTBREW_CLIENT_PORT}"
-    REACT_APP_API_HOST: "http://${POKUS_CHARTBREW_FQDN}:${CHARTBREW_API_PORT}"
+    REACT_APP_CLIENT_HOST: "http://${POKUS_CHARTBREW_WEB_FQDN}:${CHARTBREW_CLIENT_PORT}"
+    REACT_APP_API_HOST: "http://${POKUS_CHARTBREW_API_FQDN}:${CHARTBREW_API_PORT}"
   # healthcheck:
     # test: ["CMD", "curl", "-f", "http://localhost:9000/chartbrew/health/live"]
     # interval: 30s
@@ -87,7 +87,8 @@ services:
         aliases:
           - nginx.pokus.io
     extra_hosts:
-      - "${POKUS_CHARTBREW_FQDN}:${DOCK_HOST_IP_ADDR}"
+      - "${POKUS_CHARTBREW_WEB_FQDN}"
+      - "${POKUS_CHARTBREW_API_FQDN}"
     depends_on:
       - chartbrew
       # - chartbrew1
