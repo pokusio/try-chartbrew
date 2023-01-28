@@ -8,62 +8,94 @@ x-chartbrew-common: &chartbrew-common
   # command: npm start
   restart: unless-stopped
   expose:
-    - "0.0.0.0:4019:4019"
-    - "0.0.0.0:4018:4018"
+    - "${CHARTBREW_CLIENT_PORT}"
+    - "${CHARTBREW_API_PORT}"
+  ports:
+    - "${CHARTBREW_CLIENT_PORT}:${CHARTBREW_CLIENT_PORT}"
+    - "${CHARTBREW_API_PORT}:${CHARTBREW_API_PORT}"
   environment:
-    CB_SECRET: "enter_a_secure_string_youre_proudof"
-    CB_API_HOST: "0.0.0.0"
-    CB_API_PORT: "4019"
-    CB_DB_HOST: "host.docker.internal"
-    CB_DB_PORT: "3306"
-    CB_DB_NAME: "chartbrew"
-    CB_DB_USERNAME: "chartbrewuser"
-    CB_DB_PASSWORD: "chartbrewpwd"
-    REACT_APP_CLIENT_HOST: "http://localhost:4018"
-    REACT_APP_API_HOST: "http://localhost:4019"
+    CB_SECRET: ${CB_SECRET}
+    CB_API_HOST: ${CB_API_HOST}
+    CB_API_PORT: ${CB_API_PORT}
+    CB_DB_DIALECT: ${CB_DB_DIALECT}
+    CB_DB_HOST: ${CB_DB_HOST}
+    CB_DB_PORT: ${CB_DB_PORT}
+    CB_DB_NAME: ${CB_DB_NAME}
+    CB_DB_USERNAME: ${CB_DB_USERNAME}
+    CB_DB_PASSWORD: ${CB_DB_PASSWORD}
+    REACT_APP_CLIENT_HOST: "http://${POKUS_CHARTBREW_FQDN}:${CHARTBREW_CLIENT_PORT}"
+    REACT_APP_API_HOST: "http://${POKUS_CHARTBREW_FQDN}:${CHARTBREW_API_PORT}"
   # healthcheck:
     # test: ["CMD", "curl", "-f", "http://localhost:9000/chartbrew/health/live"]
     # interval: 30s
     # timeout: 20s
     # retries: 3
 
-# starts 4 docker containers running chartbrew server instances.
-# using nginx reverse proxy, load balancing, you can access
-# it through port 9000.
+# --- # --- # --- # --- # --- # --- # --- # --- # --- # --- # --- # --- #
 services:
-
-  chartbrew1:
+  # --- # --- # --- # --- # --- #
+  # # --- # --- # --- # --- #
+  # # Starts 4 docker containers running chartbrew server instances.
+  # # Using nginx reverse proxy, load balancing, you can access chartbrew API through port CHARTBREW_API_PORT, and chartbrew webui through port CHARTBREW_CLIENT_PORT.
+  # Starts 1 docker container running chartbrew api and serving chartbrew webui.
+  chartbrew:
     <<: *chartbrew-common
-    hostname: chartbrew1
+    hostname: chartbrew
     # volumes:
       # - data1-1:/data1
       # - data1-2:/data2
     depends_on:
       - chartbrew_db
+    networks:
+      chartbrew_net:
+        aliases:
+          - chartbew.pokus.io
+          - chartbrew_api.pokus.io
+  # --- # --- # --- # --- # --- #
+  # # --- # --- # --- # --- #
+  # # Postgres DB for chartbrew
   chartbrew_db:
     image: postgres:14.1-alpine
     restart: always
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-    ports:
-      - '5432:5432'
+      - POSTGRES_USER=${CB_DB_USERNAME}
+      - POSTGRES_PASSWORD=${CB_DB_PASSWORD}
+    expose:
+      - '5432'
+    # ports:
+      # - '5432:5432'
     volumes: 
-      - db:/var/lib/postgresql/data
+      - chartbrew-db:/var/lib/postgresql/data
+    env_file:
+      - ./.env
+    networks:
+      chartbrew_net:
+        aliases:
+          - ${CB_DB_HOST}
+
   nginx:
     image: nginx:1.19.2-alpine
     hostname: nginx
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf:ro
     ports:
-      - "9000:9000"
-      - "9001:9001"
+      - "${CHARTBREW_CLIENT_PORT}:${CHARTBREW_CLIENT_PORT}"
+      - "${CHARTBREW_API_PORT}:${CHARTBREW_API_PORT}"
+    networks:
+      zero_chamber_net:
+      chartbrew_net:
+        aliases:
+          - nginx.pokus.io
+    extra_hosts:
+      - "${POKUS_CHARTBREW_FQDN}:${DOCK_HOST_IP_ADDR}"
     depends_on:
-      - chartbrew1
+      - chartbrew
+      # - chartbrew1
       # - chartbrew2
       # - chartbrew3
       # - chartbrew4
-
+    env_file:
+      - ./.env
 ## By default this config uses default local driver,
 ## For custom volumes replace with volume driver configuration.
 volumes:
@@ -76,3 +108,21 @@ volumes:
   # data3-2:
   # data4-1:
   # data4-2:
+networks:
+  # --- # --- # --- # --- # --- # --- # --- # --- #
+  # zero chamber is the network users
+  # hit to HTTP query Chartbrew frontend and api
+  # --- # --- # --- # --- # --- # --- # --- # --- #
+  zero_chamber_net:
+    name: zero_chamber_net
+  # --- # --- # --- # --- # --- # --- # --- # --- #
+  # Users cannot access postgres at all, not
+  # even through the reverse proxy 
+  # Users can access both chartbrew frontend 
+  # and api, but only through reverse proxy
+  # --- # --- # --- # --- # --- # --- # --- # --- #
+  # 
+  # --- # --- # --- # --- # --- # --- # --- # --- #
+  chartbrew_net:
+    name: chartbrew_net
+    internal: true

@@ -5,6 +5,11 @@
 
 * 
 ```bash
+export DESIRED_VERSION="feature/first-try-for-fun"
+export CHARTBREW_HOME="~/.chartbrew.run/"
+git clone git@github.com:pokusio/try-chartbrew.git "${CHARTBREW_HOME}"
+cd "${CHARTBREW_HOME}"
+git checkout "${DESIRED_VERSION}"
 
 ```
 
