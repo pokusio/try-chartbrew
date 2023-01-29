@@ -23,8 +23,8 @@ CREATE USER chartbrewuser;
 
 -- Reassign ownership to all elements:
 
-ALTER DATABASE target_database OWNER TO new_onwer;
-REASSIGN OWNED BY old_role [, ...] TO new_role;
+-- ALTER DATABASE target_database OWNER TO new_onwer;
+-- REASSIGN OWNED BY old_role [, ...] TO new_role;
 
 -- To assign to an existing user total access to the current DB do:
 
