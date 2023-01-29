@@ -17,7 +17,7 @@ CREATE DATABASE chartbrew_db OWNER chartbrewuser;
 
 -- Connect whithin the same console:
 
-\connect chartbrew_db
+-- \connect chartbrew_db
 
 -- Or connect from another psql shell with: psql chartbrew_db -U chartbrewuser -W
 
