@@ -4,7 +4,16 @@ version: '3.9'
 
 # Settings and configurations that are common for all containers
 x-chartbrew-common: &chartbrew-common
-  image: razvanilin/chartbrew
+  # image: razvanilin/chartbrew
+  image: razvanilin/chartbrew:pokus-io
+  # container_name: pokus_dev
+  build:
+      context: oci/chartbrew/
+      dockerfile: Dockerfile
+      # args:
+        # # see https://ccc
+        # - POKUS_USER_UID=$POKUS_USER_UID
+        # - POKUS_USER_GID=$POKUS_USER_GID
   # command: npm start
   restart: unless-stopped
   expose:
