@@ -9,11 +9,11 @@ CREATE DATABASE chartbrew_db OWNER chartbrewuser;
 -- If you don't have access to the 'createuser' command, you can create the user in the
 -- in the SQL console as root user with:
 
-CREATE USER chartbrewuser;
---CREATE ROLE
-\password chartbrewpwd
---Enter new password: 
---Enter it again:
+-- CREATE USER chartbrewuser;
+-- --CREATE ROLE
+-- \password chartbrewpwd
+-- --Enter new password: 
+-- --Enter it again:
 
 -- Connect whithin the same console:
 
