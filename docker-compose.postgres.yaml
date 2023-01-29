@@ -64,18 +64,19 @@ services:
   # # --- # --- # --- # --- #
   # # Postgres DB for chartbrew
   chartbrew_db:
-    image: mysql:5.7
+    image: postgres:14.1-alpine
     restart: always
     environment:
-      MYSQL_DATABASE: ${CB_DB_NAME}
-      MYSQL_USER: ${CB_DB_USERNAME}
-      MYSQL_PASSWORD: ${CB_DB_PASSWORD}
-      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      - POSTGRES_USER=${CB_DB_USERNAME}
+      - POSTGRES_PASSWORD=${CB_DB_PASSWORD}
+      # - POSTGRES_DB=${CB_DB_NAME}
+    expose:
+      - '5432'
     ports:
-      - ${CB_DB_PORT}:${CB_DB_PORT}
-    volumes:
-      - chartbrew-db:/var/lib/mysql
-      # - ./init-chartbrew-db.sql:/docker-entrypoint-initdb.d/init-chartbrew-db.sql
+      - '5432:5432'
+    volumes: 
+      - chartbrew-db:/var/lib/postgresql/data
+      - ./init-chartbrew-db.sql:/docker-entrypoint-initdb.d/init-chartbrew-db.sql
     env_file:
       - ./.env
     networks:
@@ -103,7 +104,6 @@ services:
       - "${POKUS_CHARTBREW_API_FQDN}:${DOCK_HOST_IP_ADDR}"
     depends_on:
       - chartbrew
-      - chartbrew_db
       # - chartbrew1
       # - chartbrew2
       # - chartbrew3
