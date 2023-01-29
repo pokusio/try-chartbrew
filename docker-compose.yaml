@@ -85,10 +85,12 @@ services:
       zero_chamber_net:
       chartbrew_net:
         aliases:
+          - "${POKUS_CHARTBREW_WEB_FQDN}"
+          - "${POKUS_CHARTBREW_API_FQDN}"
           - nginx.pokus.io
     extra_hosts:
-      - "${POKUS_CHARTBREW_WEB_FQDN}"
-      - "${POKUS_CHARTBREW_API_FQDN}"
+      - "${POKUS_CHARTBREW_WEB_FQDN}:${DOCK_HOST_IP_ADDR}"
+      - "${POKUS_CHARTBREW_API_FQDN}:${DOCK_HOST_IP_ADDR}"
     depends_on:
       - chartbrew
       # - chartbrew1
