@@ -12,7 +12,8 @@ git clone git@github.com:pokusio/try-chartbrew.git "${CHARTBREW_HOME}"
 cd "${CHARTBREW_HOME}"
 git checkout "${DESIRED_VERSION}"
 chmod +x ./*.sh
-./run.sh
+git pull && ./restart.sh && docker-compose logs -f
+# ./run.sh
 # ./restart.sh
 # ./stop.sh
 
