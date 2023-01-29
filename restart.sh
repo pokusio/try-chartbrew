@@ -1,4 +1,5 @@
 #!/bin/bash
-docker-compose down --rmi all --volumes
+docker-compose down && \
+docker volume rm $(docker volume ls -q) && \
 docker-compose up -d --force-recreate
 
