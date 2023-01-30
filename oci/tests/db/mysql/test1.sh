@@ -89,6 +89,25 @@ echo "# --- # --- # --- # --- # --- # --- # --- #"
 mysql --defaults-extra-file="$sql_client_cnf_file" -h 0.0.0.0 -e 'SHOW TABLES;' -D ${CB_DB_NAME}
 
 
+
+
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+echo "# --- # --- # --- # "
+echo "# --- # --- # "
+echo "# -- -- -- Password encryption test : encrypting an example password"
+echo "# --- # --- # "
+echo "# --- # --- # --- # "
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+
+export EXAMPLE_ENC_MYSQL_USR_PSSWD="DAA21282DD0A7AEC5695AB058DAFD50DB58264F7"
+export EXAMPLE_CLEAR_MYSQL_USR_PSSWD=""
+export EXAMPLE_CLEAR_MYSQL_USR_PSSWD="chartbrewpwd"
+# export EXAMPLE_DECRYPTED_MYSQL_USR_PSSWD=""
+
+mysql --defaults-extra-file="$sql_client_cnf_file" -h 0.0.0.0 -e "SELECT UNHEX(MD5('${EXAMPLE_CLEAR_MYSQL_USR_PSSWD}')) AS Encr_test_passwd;"
+
+
 exit 0
 
 rm "$sql_client_cnf_file"
