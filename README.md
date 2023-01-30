@@ -65,12 +65,19 @@ docker-compose exec -it devops_net_probe bash -c 'ping -c 4 chartbrew_api.pokus.
 docker-compose exec -it devops_net_probe bash -c 'ping -c 4 chartbrew_db.pokus.io'
 docker-compose exec -it devops_net_probe bash -c 'ping -c 4 postgres.pokus.io'
 
+
 # --- --- #
 # 
 # Now we install mysql client to 
 # try n connect from [devops_net_probe] container
 # to mysql container, and execute a remote SELECT query
-# 
+# remotely
+
+docker-compose exec -it devops_net_probe bash -c 'pwd && apt-get install -y default-mysql-client && mysql --version'
+
+docker-compose cp ./oci/tests/db/mysql/test1_from_probe.sh devops_net_probe:/root
+
+docker-compose exec -it devops_net_probe bash -c 'pwd && ls -alh /root/test1_from_probe.sh && chmod +x /root/test1_from_probe.sh && /root/test1_from_probe.sh'
 
 ```
 
