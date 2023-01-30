@@ -139,4 +139,4 @@ networks:
   # --- # --- # --- # --- # --- # --- # --- # --- #
   chartbrew_net:
     name: chartbrew_net
-    internal: true
+    # internal: true
