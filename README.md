@@ -56,7 +56,7 @@ docker-compose exec -it chartbrew_db bash -c 'pwd && export MYSQL_PWD="chartbrew
 
 docker-compose cp ./oci/tests/db/mysql/test1.sh chartbrew_db:/root
 docker-compose exec -it chartbrew_db bash -c 'pwd && ls -alh /root/test1.sh && chmod +x /root/test1.sh && /root/test1.sh'
-docker-compose exec -it devops_net_probe bash -c 'pwd && apt-get update -y && apt-get install -y net-tools iputils-ping curl wget jq'
+docker-compose exec -it devops_net_probe bash -c 'pwd && apt-get update -y && apt-get install -y net-tools iputils-ping curl wget jq default-mysql-client && mysql --version'
 
 
 
@@ -77,6 +77,7 @@ docker-compose exec -it devops_net_probe bash -c 'pwd && apt-get install -y defa
 
 docker-compose cp ./oci/tests/db/mysql/test1_from_probe.sh devops_net_probe:/root
 
+# ok and this test worked : 
 docker-compose exec -it devops_net_probe bash -c 'pwd && ls -alh /root/test1_from_probe.sh && chmod +x /root/test1_from_probe.sh && /root/test1_from_probe.sh'
 
 ```
