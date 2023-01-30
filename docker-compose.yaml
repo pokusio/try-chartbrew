@@ -73,9 +73,9 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     ports:
       - ${CB_DB_PORT}:${CB_DB_PORT}
-    volumes:
-      - chartbrew-db:/var/lib/mysql
-      # - ./init-chartbrew-db.sql:/docker-entrypoint-initdb.d/init-chartbrew-db.sql
+    # volumes:
+      # - chartbrew-db:/var/lib/mysql
+      # # - ./init-chartbrew-db.sql:/docker-entrypoint-initdb.d/init-chartbrew-db.sql
     env_file:
       - ./.env
     networks:
