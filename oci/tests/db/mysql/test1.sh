@@ -31,9 +31,55 @@ echo "# --- # --- # --- # --- # --- # --- # --- #"
 # password="${CB_DB_PASSWORD}"
 # EOF
 
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+echo "# --- # --- # --- # "
+echo "# --- # --- # "
+echo "# -- -- -- Executing SELECT test command"
+echo "# --- # --- # "
+echo "# --- # --- # --- # "
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+
+mysql --defaults-extra-file="$sql_client_cnf_file" -h 0.0.0.0 -e 'select 1' -D ${CB_DB_NAME}
+
+
+
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+echo "# --- # --- # --- # "
+echo "# --- # --- # "
+echo "# -- -- -- Showing all MySQL Users"
+echo "# --- # --- # "
+echo "# --- # --- # --- # "
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+
+mysql --defaults-extra-file="$sql_client_cnf_file" -h 0.0.0.0 -e 'select * from mysql.user;'
+
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+echo "# --- # --- # --- # "
+echo "# --- # --- # "
+echo "# -- -- -- Showing all MySQL Databases"
+echo "# --- # --- # "
+echo "# --- # --- # --- # "
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+
+mysql --defaults-extra-file="$sql_client_cnf_file" -h 0.0.0.0 -e 'SHOW DATABASES;'
+
+
+
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+echo "# --- # --- # --- # "
+echo "# --- # --- # "
+echo "# -- -- -- Showing all tables in [${CB_DB_NAME}] SELECT test command"
+echo "# --- # --- # "
+echo "# --- # --- # --- # "
+echo "# --- # --- # --- # --- # --- # --- # --- #"
+
+mysql --defaults-extra-file="$sql_client_cnf_file" -h 0.0.0.0 -e 'SHOW TABLES;' -D ${CB_DB_NAME}
+
 
 exit 0
-
-mysql -h 0.0.0.0 --defaults-extra-file="$sql_client_cnf_file" -e 'select 1'
 
 rm "$sql_client_cnf_file"
