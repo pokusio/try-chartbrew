@@ -19,9 +19,9 @@ x-chartbrew-common: &chartbrew-common
   expose:
     - "${CHARTBREW_CLIENT_PORT}"
     - "${CHARTBREW_API_PORT}"
-  ports:
-    - "${CHARTBREW_CLIENT_PORT}:${CHARTBREW_CLIENT_PORT}"
-    - "${CHARTBREW_API_PORT}:${CHARTBREW_API_PORT}"
+  # ports:
+    # - "${CHARTBREW_CLIENT_PORT}:${CHARTBREW_CLIENT_PORT}"
+    # - "${CHARTBREW_API_PORT}:${CHARTBREW_API_PORT}"
   environment:
     CB_SECRET: ${CB_SECRET}
     CB_API_HOST: ${CB_API_HOST}
@@ -71,8 +71,10 @@ services:
       MYSQL_USER: ${CB_DB_USERNAME}
       MYSQL_PASSWORD: ${CB_DB_PASSWORD}
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
-    ports:
-      - ${CB_DB_PORT}:${CB_DB_PORT}
+    expose:
+      - ${CB_DB_PORT}
+    # ports:
+      # - ${CB_DB_PORT}:${CB_DB_PORT}
     # volumes:
       # - chartbrew-db:/var/lib/mysql
       # # - ./init-chartbrew-db.sql:/docker-entrypoint-initdb.d/init-chartbrew-db.sql
@@ -95,12 +97,12 @@ services:
       zero_chamber_net:
       chartbrew_net:
         aliases:
-          - "${POKUS_CHARTBREW_WEB_FQDN}"
-          - "${POKUS_CHARTBREW_API_FQDN}"
           - nginx.pokus.io
-    extra_hosts:
-      - "${POKUS_CHARTBREW_WEB_FQDN}:${DOCK_HOST_IP_ADDR}"
-      - "${POKUS_CHARTBREW_API_FQDN}:${DOCK_HOST_IP_ADDR}"
+          # - "${POKUS_CHARTBREW_WEB_FQDN}"
+          # - "${POKUS_CHARTBREW_API_FQDN}"
+    # extra_hosts:
+      # - "${POKUS_CHARTBREW_WEB_FQDN}:${DOCK_HOST_IP_ADDR}"
+      # - "${POKUS_CHARTBREW_API_FQDN}:${DOCK_HOST_IP_ADDR}"
     depends_on:
       - chartbrew
       - chartbrew_db
@@ -139,4 +141,4 @@ networks:
   # --- # --- # --- # --- # --- # --- # --- # --- #
   chartbrew_net:
     name: chartbrew_net
-    # internal: true
+    internal: true
