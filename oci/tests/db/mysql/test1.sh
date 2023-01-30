@@ -1,7 +1,8 @@
 #!/bin/sh
 
 ramdir="/ramfs"
-sql_client_sql_client_cnf_file_file="$(mktemp "$ramdir/this-script-name-XXXXX")"
+sys_tempdir="/tmp"
+sql_client_sql_client_cnf_file_file="$(mktemp "$sys_tempdir/this-script-name-XXXXX")"
 # pw="$(produce_password)"
 export CB_DB_USERNAME="chartbrewuser"
 export CB_DB_PASSWORD="chartbrewpwd"
