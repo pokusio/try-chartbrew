@@ -11,13 +11,13 @@ export CB_DB_PASSWORD="chartbrewpwd"
 export CB_DB_PORT="3306"
 export CB_DB_NAME="chartbrew_db"
 
-cat << EOF> $sql_client_cnf_file_admin
+cat <<EOF > $sql_client_cnf_file_admin
 [client]
 user=root
 password=""
 EOF
 
-cat << EOF> $sql_client_cnf_file
+cat <<EOF > $sql_client_cnf_file
 [client]
 user=${CB_DB_USERNAME}
 password="${CB_DB_PASSWORD}"
