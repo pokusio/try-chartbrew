@@ -46,16 +46,31 @@ docker run -p 4019:4019 -p 4018:4018 \
 #### MySQL
 
 ```bash
+
+git checkout *.* oci/tests/db/mysql/test1.sh && git pull && chmod +x ./*.sh && ./restart.sh
+
 docker-compose exec -it chartbrew_db bash -c 'pwd && whoami'
 docker-compose exec -it chartbrew_db bash -c 'pwd && mysql -D chartbrew_db -u chartbrewuser -p -e "SELECT 1 as TEST;" '
 
 docker-compose exec -it chartbrew_db bash -c 'pwd && export MYSQL_PWD="chartbrewpwd" && mysql -D chartbrew_db -u chartbrewuser -e "SELECT 1 as TEST;" '
 
-
-
 docker-compose cp ./oci/tests/db/mysql/test1.sh chartbrew_db:/root
 docker-compose exec -it chartbrew_db bash -c 'pwd && ls -alh /root/test1.sh && chmod +x /root/test1.sh && /root/test1.sh'
+docker-compose exec -it devops_net_probe bash -c 'pwd && apt-get update -y && apt-get install -y net-tools iputils-ping curl wget jq'
 
+
+
+docker-compose exec -it devops_net_probe bash -c 'ping -c 4 chartbrew.pokus.io'
+docker-compose exec -it devops_net_probe bash -c 'ping -c 4 chartbrew_api.pokus.io'
+docker-compose exec -it devops_net_probe bash -c 'ping -c 4 chartbrew_db.pokus.io'
+docker-compose exec -it devops_net_probe bash -c 'ping -c 4 postgres.pokus.io'
+
+# --- --- #
+# 
+# Now we install mysql client to 
+# try n connect from [devops_net_probe] container
+# to mysql container, and execute a remote SELECT query
+# 
 
 ```
 

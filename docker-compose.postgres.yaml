@@ -58,8 +58,8 @@ services:
     networks:
       chartbrew_net:
         aliases:
-          - chartbew.pokus.io
-          - chartbrew_api.pokus.io
+          - ${POKUS_CHARTBREW_WEB_FQDN}
+          - ${POKUS_CHARTBREW_API_FQDN}
   # --- # --- # --- # --- # --- #
   # # --- # --- # --- # --- #
   # # Postgres DB for chartbrew

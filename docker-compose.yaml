@@ -58,8 +58,8 @@ services:
     networks:
       chartbrew_net:
         aliases:
-          - chartbew.pokus.io
-          - chartbrew_api.pokus.io
+          - ${POKUS_CHARTBREW_WEB_FQDN}
+          - ${POKUS_CHARTBREW_API_FQDN}
   # --- # --- # --- # --- # --- #
   # # --- # --- # --- # --- #
   # # Postgres DB for chartbrew
@@ -73,8 +73,8 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: 1
     expose:
       - ${CB_DB_PORT}
-    # ports:
-      # - ${CB_DB_PORT}:${CB_DB_PORT}
+    ports:
+      - ${CB_DB_PORT}:${CB_DB_PORT}
     # volumes:
       # - chartbrew-db:/var/lib/mysql
       # # - ./init-chartbrew-db.sql:/docker-entrypoint-initdb.d/init-chartbrew-db.sql
