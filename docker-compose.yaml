@@ -88,6 +88,8 @@ services:
   devops_net_probe:
     image: debian:bullseye-slim
     hostname: devops_net_probe
+    command: /bin/bash
+    restart: unless-stopped
     networks:
       zero_chamber_net:
       chartbrew_net:
