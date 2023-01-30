@@ -85,6 +85,23 @@ services:
         aliases:
           - ${CB_DB_HOST}
 
+  devops_net_probe:
+    image: debian:bullseye-slim
+    hostname: devops_net_probe
+    networks:
+      zero_chamber_net:
+      chartbrew_net:
+        aliases:
+          - devops_net_probe.pokus.io
+          # - "${POKUS_CHARTBREW_WEB_FQDN}"
+          # - "${POKUS_CHARTBREW_API_FQDN}"
+    # extra_hosts:
+      # - "${POKUS_CHARTBREW_WEB_FQDN}:${DOCK_HOST_IP_ADDR}"
+      # - "${POKUS_CHARTBREW_API_FQDN}:${DOCK_HOST_IP_ADDR}"
+    depends_on:
+      - nginx
+    env_file:
+      - ./.env
   nginx:
     image: nginx:1.19.2-alpine
     hostname: nginx
