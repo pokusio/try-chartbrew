@@ -105,8 +105,21 @@ export EXAMPLE_CLEAR_MYSQL_USR_PSSWD=""
 export EXAMPLE_CLEAR_MYSQL_USR_PSSWD="chartbrewpwd"
 # export EXAMPLE_DECRYPTED_MYSQL_USR_PSSWD=""
 
-mysql --defaults-extra-file="$sql_client_cnf_file" -h 0.0.0.0 -e "SELECT UNHEX(MD5('${EXAMPLE_CLEAR_MYSQL_USR_PSSWD}')) AS Encr_test_passwd;"
+export EXAMPLE_ENC_MYSQL_USR_PSSWD="DAA21282DD0A7AEC5695AB058DAFD50DB58264F7"
+export EXAMPLE_CLEAR_MYSQL_USR_PSSWD=""
+export EXAMPLE_CLEAR_MYSQL_USR_PSSWD="chartbrewpwd"
+# export EXAMPLE_DECRYPTED_MYSQL_USR_PSSWD=""
 
+mysql --defaults-extra-file="$sql_client_cnf_file" -h 0.0.0.0 -e "SELECT UNHEX(MD5('${EXAMPLE_CLEAR_MYSQL_USR_PSSWD}')) AS Encr_test_passwd_encrypt_md5_unhex;"
+
+mysql --defaults-extra-file="$sql_client_cnf_file" -h 0.0.0.0 -e "SELECT MD5('${EXAMPLE_CLEAR_MYSQL_USR_PSSWD}') AS Encr_test_passwd_encrypt_md5;"
+
+
+mysql --defaults-extra-file="$sql_client_cnf_file" -h 0.0.0.0 -e "SELECT SHA2('${EXAMPLE_CLEAR_MYSQL_USR_PSSWD}', 512) AS Encr_test_passwd_encrypt_sha512;"
+
+mysql --defaults-extra-file="$sql_client_cnf_file" -h 0.0.0.0 -e "SELECT SHA2('${EXAMPLE_CLEAR_MYSQL_USR_PSSWD}', 256) AS Encr_test_passwd_encrypt_sha256;"
+
+mysql --defaults-extra-file="$sql_client_cnf_file" -h 0.0.0.0 -e "SELECT PASSWORD('${EXAMPLE_CLEAR_MYSQL_USR_PSSWD}') AS Encr_test_passwd_mysql_password_native_function;"
 
 exit 0
 
