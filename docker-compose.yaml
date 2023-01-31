@@ -93,7 +93,7 @@ services:
     tty: true
     restart: unless-stopped
     networks:
-      zero_chamber_net:
+      # zero_chamber_net:
       chartbrew_net:
         aliases:
           - devops_net_probe.pokus.io
